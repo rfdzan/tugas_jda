@@ -1,0 +1,16 @@
+id,technician_id,client_id,ac_id,date,status
+1,2,6,1,1 Jun 2020,finish
+2,3,7,2,1 May 2020,finish
+3,4,8,3,2 Jun 2020,finish
+4,5,9,4,3 March 2021,finish
+5,2,6,5,5 Dec 2021,finish
+6,3,7,6,25 Dec 2021,finish
+7,4,10,7,1 Jan 2022,finish
+8,5,11,8,2 Feb 2022,finish
+9,2,6,9,4 Apr 2022,finish
+10,3,7,10,5 May 2023,on repair
+11,4,12,11,6 Jun 2023,on repair
+12,5,13,12,7 Jul 2023,on repair
+13,2,6,13,8 Aug 2023,paid
+14,3,7,14,9 Sep 2023,paid
+15,4,14,15,10 Oct 2023,unpaid

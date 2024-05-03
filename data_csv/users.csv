@@ -1,0 +1,16 @@
+id,name,email,password,gender,photo,address,role
+1,Fulan,fulan@gmail.com,******,L,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,1
+2,Fulanah,fulanah@gmail.com,******,P,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,2
+3,Ardi,ardi@gmail.com,******,L,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,2
+4,Samsudin,samsudin@gmail.com,******,L,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,2
+5,Eko,eko@gmail.com,******,L,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,2
+6,Sugeng,sugeng@gmail.com,******,L,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,3
+7,Alif,alif@gmail.com,******,L,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,3
+8,Siti,siti@gmail.com,******,P,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,3
+9,Juminten,juminten@gmail.com,******,P,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,3
+10,Paijo,paijo@gmail.com,******,L,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,3
+11,Saifuddin,saifuddin@gmail.com,******,L,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,3
+12,Daffa,daffa@gmail.com,******,L,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,3
+13,Akbar,akbar@gmail.com,******,L,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,3
+14,Rafli,rafli@gmail.com,******,L,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,3
+15,Rini,rini@gmail.com,******,P,https://lorem.ipsum/dolor.png,Jl. Cisitu Indah VI no 6,3
