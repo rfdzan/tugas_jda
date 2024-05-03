@@ -126,6 +126,7 @@ def insert_into_tables():
 
 def main():
     # create_tables()
+    # insert_into_tables()
     ...
 
 
