@@ -183,7 +183,7 @@ def insert_into_tables():
             stmt_insert = stmt[stem]
             for line in rdr:
                 params = list(line.values())
-                if stem == "service":
+                if stem == SERVICE:
                     params = parse_date(params)
                 params.pop(0)  # exclude 'id'
                 try:
