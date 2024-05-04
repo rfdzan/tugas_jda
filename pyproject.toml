@@ -1,7 +1,7 @@
 [project]
 name = "tugas_jda"
 version = "0.1.0"
-description = "Default template for PDM package"
+description = "Tugas JDA x Alkademi 2024"
 authors = [
     {name = "rfdzan", email = "hekodev.py@gmail.com"},
 ]
@@ -18,4 +18,4 @@ license = {text = "MIT"}
 [tool.pdm]
 distribution = false
 [tool.pdm.scripts]
-start = "python src/tugas2/main.py"
+start = "python src/tugas/main.py"
