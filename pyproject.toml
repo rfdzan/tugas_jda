@@ -19,3 +19,8 @@ license = {text = "MIT"}
 distribution = false
 [tool.pdm.scripts]
 start = "python src/tugas/main.py"
+
+[tool.pdm.dev-dependencies]
+static_check = [
+    "mypy>=1.10.0",
+]
