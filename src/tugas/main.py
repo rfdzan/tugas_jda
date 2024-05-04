@@ -113,20 +113,55 @@ def create_tables():
     conn.close()
 
 
+def field_names() -> dict[str, list[str]]:
+    fieldnames = defaultdict(list[str])
+    fieldnames[AC] = ["id", "name", "brand", "pk", "price"]
+    fieldnames[USERS] = [
+        "id",
+        "name",
+        "email",
+        "password",
+        "gender",
+        "photo",
+        "address",
+        "role",
+    ]
+    fieldnames[SERVICE] = [
+        "id",
+        "technician_id",
+        "client_id",
+        "ac_id",
+        "date",
+        "status",
+    ]
+    fieldnames[ROLES] = ["id", "name"]
+    return fieldnames
+
+
 def insert_into_tables():
     conn = connect_db()
     cursor = conn.cursor()
     stmt = stmt_insert_data()
+    fieldname_map = field_names()
     for file in csv_files():
         stem = file.stem
         with open(file, "r") as file:
-            rdr = csv.reader(file, delimiter=",")
-        stmt_insert = stmt[stem]
+            rdr = csv.DictReader(
+                file,
+                delimiter=",",
+                fieldnames=fieldname_map[stem],
+            )
+            # next(rdr)  # skip header
+            for line in rdr:
+                print(line)
+        break
+        # stmt_insert = stmt[stem]
+        # cursor.execute()
 
 
 def main():
     # create_tables()
-    # insert_into_tables()
+    insert_into_tables()
     ...
 
 
