@@ -1,6 +1,7 @@
 import mysql.connector
 import mysql.connector.errorcode
 import csv
+from datetime import date, datetime
 from mysql.connector.abstracts import MySQLConnectionAbstract
 from mysql.connector.pooling import PooledMySQLConnection
 from dotenv import dotenv_values
@@ -16,6 +17,9 @@ USERS = "users"
 
 
 def stmt_create_table() -> dict[str, str]:
+    """
+    Key, Value = filename, create_table_statements
+    """
     hmap = defaultdict(str)
     stmt_create_table_user = """CREATE TABLE IF NOT EXISTS users (
        id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -36,11 +40,11 @@ def stmt_create_table() -> dict[str, str]:
     )"""
     stmt_create_table_service = """CREATE TABLE IF NOT EXISTS service (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
-        technician_id INTEGER UNIQUE,
-        service_id INTEGER UNIQUE,
-        ac_id INTEGER UNIQUE,
+        technician_id INTEGER,
+        client_id INTEGER,
+        ac_id INTEGER,
         date DATE,
-        status ENUM('finish', 'on_repair', 'paid', 'unpaid')
+        status ENUM('finish', 'on repair', 'paid', 'unpaid')
     )"""
     stmt_create_table_roles = """CREATE TABLE IF NOT EXISTS roles (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -54,23 +58,26 @@ def stmt_create_table() -> dict[str, str]:
 
 
 def stmt_insert_data() -> dict[str, str]:
+    """
+    Key, Value = filename, sql_insert_statements
+    """
     hmap = defaultdict(str)
-    insert_stmt_ac = """INSERT INTO ac (id, name, brand, pk, price) VALUES (
-            %(id)s, %(name)s, %(brand)s, %(pk)s, %(price))
+    insert_stmt_ac = """INSERT INTO ac (name, brand, pk, price) VALUES (
+            %s, %s, %s, %s)
         """
 
-    insert_stmt_service = """INSERT INTO service (id, technician_id, client_id, service_id, ac_id, date, status) VALUES (
-            %(id)s, %(technician_id)s, %(client_id)s, %(service_id)s, %(ac_id)s, %(date)s, %(status))
+    insert_stmt_service = """INSERT INTO service (technician_id, client_id, ac_id, date, status) VALUES (
+            %s, %s, %s, %s, %s)
     """
 
-    insert_stmt_roles = """INSERT INTO roles (id, name) VALUES (
-            %(id)s, %(name)s)
+    insert_stmt_roles = """INSERT INTO roles (name) VALUES (
+            %s)
     """
 
     insert_stmt_users = """INSERT INTO users (
-            id, name, email, password, gender, photo, address, role
+            name, email, password, gender, photo, address, role
         ) VALUES (
-            %(id)s, %(name)s, %(email)s, %(password)s, %(gender)s, %(photo)s, %(address)s, %(role)s)
+            %s, %s, %s, %s, %s, %s, %s)
     """
 
     hmap[USERS] = insert_stmt_users
@@ -103,6 +110,9 @@ def connect_db() -> Union[PooledMySQLConnection, MySQLConnectionAbstract]:
 
 
 def create_tables():
+    """
+    If database has no tables, invoke this function.
+    """
     conn = connect_db()
     cursor = conn.cursor()
     stmt = stmt_create_table()
@@ -114,6 +124,9 @@ def create_tables():
 
 
 def field_names() -> dict[str, list[str]]:
+    """
+    CSV header names.
+    """
     fieldnames = defaultdict(list[str])
     fieldnames[AC] = ["id", "name", "brand", "pk", "price"]
     fieldnames[USERS] = [
@@ -138,6 +151,21 @@ def field_names() -> dict[str, list[str]]:
     return fieldnames
 
 
+def parse_date(params: list[str | date]) -> list[str | date]:
+    date_column_pos = 4
+    try:
+        parse_temp_date = datetime.strptime(params[date_column_pos], "%d %b %Y")
+        params[date_column_pos] = date(
+            parse_temp_date.year, parse_temp_date.month, parse_temp_date.day
+        )
+    except ValueError as err:
+        print(err)
+        print(params)
+        print(params[date_column_pos])
+        exit(1)
+    return params
+
+
 def insert_into_tables():
     conn = connect_db()
     cursor = conn.cursor()
@@ -145,24 +173,33 @@ def insert_into_tables():
     fieldname_map = field_names()
     for file in csv_files():
         stem = file.stem
-        with open(file, "r") as file:
+        with open(file, "r") as f:
             rdr = csv.DictReader(
-                file,
+                f,
                 delimiter=",",
                 fieldnames=fieldname_map[stem],
             )
-            # next(rdr)  # skip header
+            next(rdr)  # skip header
+            stmt_insert = stmt[stem]
             for line in rdr:
-                print(line)
-        break
-        # stmt_insert = stmt[stem]
-        # cursor.execute()
+                params = list(line.values())
+                if stem == "service":
+                    params = parse_date(params)
+                params.pop(0)  # exclude 'id'
+                try:
+                    cursor.execute(stmt_insert, params)
+                except mysql.connector.Error as err:
+                    print(err)
+                    print(stmt_insert)
+                    print("file: " + stem)
+                    print(params)
+    conn.commit()
+    conn.close()
 
 
 def main():
-    # create_tables()
+    create_tables()
     insert_into_tables()
-    ...
 
 
 if __name__ == "__main__":
