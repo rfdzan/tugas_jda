@@ -1,7 +1,7 @@
 [project]
-name = "tugas_jda"
+name = "tugas"
 version = "0.1.0"
-description = "Tugas JDA x Alkademi 2024"
+description = "Default template for PDM package"
 authors = [
     {name = "rfdzan", email = "hekodev.py@gmail.com"},
 ]
